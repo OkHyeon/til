@@ -25,6 +25,14 @@ ES6 로 작성된 많은 갯수의 자바스크립트 파일을 웹팩(webpack) 
 
 ##4. 개발환경 설정
 
+보일러 플레이트 설치
+
+github.com/stephengrider
+
+https://github.com/StephenGrider/ReduxSimpleStarter 에서 클론한 뒤에
+
+npm install  하기 
+
 ##5. 프로젝트 설정
 
 ##6. JSX 와의 첫만남

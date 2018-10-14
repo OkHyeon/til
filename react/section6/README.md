@@ -66,8 +66,8 @@ url이 바뀔때마다 히스토리는 이를 관찰하는데요.
 1. react-dom , react 버전을 낮춘다.
 ~~~
 // package.json
-react-dom : "15.1.1"
-react: "15.1.1"
+react-dom : "^15.1.1"
+react: "^15.1.1"
 ~~~
 
 2. react-router 버전을 올리고 그에 맞는 문법을 사용한다.
