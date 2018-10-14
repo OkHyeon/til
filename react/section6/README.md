@@ -80,31 +80,6 @@ react: "^15.1.1"
 이 업데이트된 url을 리액트 라우터로 보낸다.
 리액트 라우터는 url을 받고 어떤 컴포넌트를 url에 기반해 보여줄지 결정한다.
 
-
-~~~ javascript
-// src/index.js
-
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-
-import { Router, browserHistory } from 'react-router';
-// Router 와 browserHistory 를 가져온다
-// router와 browserHistoryRouter는 오브젝트로서,
-// url이 바뀔때 어떤 컴포넌트를 렌더링할지 결정한다.
-
-import reducers from './reducers';
-
-const createStoreWithMiddleware = applyMiddleware()(createStore);
-
-ReactDOM.render(
-    <Provider store={createStoreWithMiddleware(reducers)}
-        <Router history={browserHistory} />
-    </Provider>
-, document,qurySelector('container'));
-~~~
-
 ##76. 라우트 구성
 
 ##77. 중첩된 라우트
