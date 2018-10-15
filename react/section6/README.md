@@ -112,6 +112,95 @@ Axios 와 redux-promise 를 설치해서 네트워크 리퀘스트를 만들수 
 
 ## 80. 포스트 리듀서의 데이터 잡기 1
 
+이번 시간에는 리듀서를 구현하여 데이터를 가져오고 어플리케이션 스테이트로 만든다.
+
+리듀서를 작성하기전에,
+index.js 파일에 combineReducers 를 통해 연결하는 작업이 필요합니다.
+상단에 PostsReducer 를 불러오고, 기존의 스테이트를 대체한다.
+
+~~~ javascript
+// reducers/index.js 
+import { combineReducers } from 'redux';
+import PostsReducer from './reducer_posts';
+
+const rootReducer = combineReducers({
+  posts: PostsReducer
+  // 기존의 스테이트를 PostsReducer 로 대체한다.
+});
+
+export default rootReducer;
+~~~
+
+리듀서 안에 reducer_posts.js 파일을 생성한다.
+
+~~~ javascript
+// reducers/reducer_posts.js 
+
+import { FETCH_POSTS } from '../actions/index';
+// 생성한 액션을 상단에 액션 타입을 불러온다.
+
+const INITIAL_STATE = {};
+// 초기 스테이트 오브젝트를 정의
+
+export default function(state = INITIAL_STATE , action){
+    // 스테이트는 초기화 한다. 기본적으로 초기 스테이트는 오브젝트이다.
+    switch(action.type){ // 액션 타입에 따라 스위치 구문으로 분기
+
+        case FETCH_POSTS :
+        // post_index 를 성공적으로 가져오는 케이스를 추가
+        // FETCH_POSTS 케이스를 추가한다.
+
+        default :
+        //액션이 특별히 없으면 default 를 이용해서 스테이트를 바로 반환한다.
+            return state;
+    }
+    // 기본적으로 하나의 함수가 있고, 스위치 구문을 통해
+    // 모든 액션 타입들을 분기한다.
+}
+~~~
+
+만약 해당 스테이트를 실수로 배열인데 오브젝트 형태로 만들었다고 하면,
+나중에 리팩토링 할 수 있지만.
+스테이트를 리팩토링하는 것은 전체적인 앱에 영향을 주기 때문에 되도록 피해야한다.
+따라서, 적어도 어떤 스테이트일지 확고하게 처음에 정의하는 것을 추천한다.
+
+예제로 돌아와서, 
+인덱스 페이지는 블로그 포스트 리스트를 보여주고 이는 오브젝트나 배열 형태로 표시되어야 한다.
+
+즉, 블로그 포스트 리스트와 블로그 포스트는 차이가 있디.
+이는 블로그 포스트 리스트에 의존할 수 없고, 개별의 스테이트가 현재 활성화된 블로그 포스트를 가져야 하죠.
+
+따라서, 두개의 스테이트가 있구요.
+하나는 배열로서, 블로그 포스트 리스트에 타이틀과 카테고리를 가지며
+다른 하나는 액티브 포스트로서, 현재 디테일 페이지에 보여지는 것이고,
+이는 해당 컨텐츠를 포함한다.
+
+~~~~ javascript
+// reducers/reducer_posts.js 
+import { FETCH_POSTS } from '../actions/index';
+
+const INITIAL_STATE = { all : [], post : null };
+// 초기화 스테이트에 반영
+
+// 1. all : []
+// 블로그 포스트 리스트를 나타내고, 인덱스 페이지에서 보여준다.
+// 다른 곳과 커뮤니케이션 용도로 만든다.
+
+// 2. post : null
+// 개별 포스트를 보여주는 부분
+// 포스트 하나를 가지고, 기본값으로 null을 가진다.
+
+
+export default function(state = INITIAL_STATE , action){
+    switch(action.type){
+        case FETCH_POSTS :
+
+        default :
+            return state;
+    }
+}
+~~~~
+
 ## 81. 포스트 리듀서의 데이터 잡기 2
 
 ## 82. 라이프사이클 메소드 안에 데이터 가져오기 1
@@ -129,6 +218,8 @@ Axios 와 redux-promise 를 설치해서 네트워크 리퀘스트를 만들수 
 ## 88. 컨트롤을 리덕스 폼으로 전달하기
 
 ## 89. CreatePost 액션 생성자
+
+
 
 ## 90. 폼 검증 1
 
