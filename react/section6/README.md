@@ -112,7 +112,7 @@ Axios 와 redux-promise 를 설치해서 네트워크 리퀘스트를 만들수 
 
 ## 80. 포스트 리듀서의 데이터 잡기 1
 
-이번 시간에는 리듀서를 구현하여 데이터를 가져오고 어플리케이션 스테이트로 만든다.
+**리듀서를 구현하여 데이터를 가져오고 어플리케이션 스테이트로 만든다.**
 
 리듀서를 작성하기전에,
 index.js 파일에 combineReducers 를 통해 연결하는 작업이 필요합니다.
@@ -202,6 +202,34 @@ export default function(state = INITIAL_STATE , action){
 ~~~~
 
 ## 81. 포스트 리듀서의 데이터 잡기 2
+
+**블로그 포스트를 리듀서와 연결**
+
+~~~ javascript
+// reducers/reducer_posts.js 
+import { FETCH_POSTS } from '../actions/index';
+
+const INITIAL_STATE = { all : [], post : null };
+
+export default function(state = INITIAL_STATE , action){
+    switch(action.type){
+        case FETCH_POSTS :
+        // FETCH_POSTS 액션이 흘러가면
+        //  블로그 포스트 리스트를 포함한 어플리케이션 스테이트를 반환한다.
+
+            return { ...state , all : action.payload.data };
+            // 새 오브젝트를 반환한다.
+            // 해당 새로운 버전의 스테이트와
+            // action.payload.data 를 추가한다.
+
+            // 새 오브젝트는 현재 스테이트와 프로퍼티가 추가되었다.
+            // 이는 블로그 포스트 데이터이고, API의 반환값이다.
+
+        default :
+            return state;
+    }
+}
+~~~
 
 ## 82. 라이프사이클 메소드 안에 데이터 가져오기 1
 
