@@ -302,6 +302,119 @@ componentWillMount 는 라이프사이클 메소드이다.
 
 ## 83. 라이프사이클 메소드 안에 데이터 가져오기 2
 
+지난 시간에 블로그 포스트 리스트를 유저에게 보여줄 때
+데이터를 가져오기 위해 액션 생성자를 호출해야하는 것을 알게 되었다.
+
+앱은 url이 변할때 액션 생성자를 호출하기 위해서, 
+post_index 컴포넌트 안의 componentWillMount 라이프사이클 메소드에서 액션 생성자를 호출한다.
+
+이 componentWillMount 메소드는 라이프사이클 메소드로서, 
+자동적으로 리액트에 의해 호출되며, 
+DOM이 처음으로 렌더링되자마자 일어난다.
+
+이번 시간에는 FETCH_POST 액션 생성자를 componetWillMount 메소드에 가져올것이다.
+이는 컴포넌트가 마운트되자마자, 데이터는 자동적으로 로드를 시작할 것이다.
+
+~~~ javascript
+// components/posts_index.js
+
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchPosts } from '../actions/index';
+// connect 와 액션 생성자를 불러온다.
+
+class PostsIndex extends Component{
+    componentWillMount(){
+        this.props.fetchPosts();
+        // componentWillMount 함수 안에 호출할 액션 생성자를 불러온다.
+    }
+
+    render() {
+        return (
+            <div>List of blog posts</div>
+        )
+    }
+}
+
+function mapDispatchToProps(dispatch){
+    return bindActionCreators({fetchPosts},dispatch)
+}
+// mapDispatchToProps 함수를 정의한다.
+
+export default connect( null , mapDispatchToProps )( PostsIndex );
+// 컴포넌트를 mapDispatchToProps 와 연결 한다.
+// connect 함수의 첫번째 요소로서 mapStateToProps 를 가지는데, 이 경우에는 해당 함수가 없다.
+// 첫번째 요소를 null로 할당하고, 아직 해당 스테이트를 맵핑할 필요는 없다.
+// PostsIndex 를 넣는다.
+// 이는 fetchPosts 를 접근하고, 이를 컴포넌트에서 호출할 수 있다.
+
+~~~
+
+새로고침을 하여, 네트워크 리퀘스트를 확인해보면
+구체적으로 posts 리퀘스트를 요청하는데, 여기에 키가 있고
+200 상태값을 얻는다.
+
+posts_index 를 리팩토링 해보면 
+
+~~~ javascript
+// components/posts_index.js
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchPosts } from '../actions/index';
+
+class PostsIndex extends Component{
+    componentWillMount(){
+        this.props.fetchPosts();
+    }
+
+    render() {
+        return (
+            <div>List of blog posts</div>
+        )
+    }
+}
+
+export default connect( null , { fetchPosts: fetchPosts }
+~~~
+
+과거에 모든 프로젝트에서 보일러플레이트로 mapDispatchToProps 를 사용했었다.
+
+하지만 여기서는 이것을 변결 할수 있다.
+
+mapDispatchToProps 함수 전체를 지우고,
+대신에 오브젝트로 fetchPosts 를 전달 할 수 있다.
+
+이것은 여전히 이 컴포넌트안에 fetchPosts 를 접근할 수 있고, 
+mapDispatchToProps 와 같은 것을 추가할 필요도 없다.
+
+이렇게 코드를 축약할 수 있고, 상단에 bindActionCreators 또한 필요없다.
+
+여기에 ES6를 사용하여 리팩토링을 할 수 있다.
+
+~~~ javascript
+{ fetchPosts: fetchPosts }
+// 는 es6 를 이용해서 
+{ fetchPosts }
+// 로 축약가능하다.
+~~~
+
+여기 같은 키와 같은 값을 가지고 있어서, 이것은 위와 같이 하나로 합칠 수 있다.
+
+정리하자면,
+
+데이터를 가져오기 위한 방법으로 액션을 디스패치하는데.
+이는 post_index 컴포넌트가 DOM을 렌더링 하자마자 발생한다.
+
+이 어플리케이션 안에서는
+post_index 가 DOM 에 마운트하는 시점에 데이터를 로딩해야 한다.
+
+데이터를 가져올 때를 아는 것은
+딱 떨어지는 문제가 아니라, 복잡할 수 있다.
+
+그래서, 다음에 앱을 만들때, 어디에 액션 생성자를 만들면 좋을지 잘 생각해서 넣어보며,
+어디에 데이터를 가져올지에 대해서 생각해봐야 한다.
+
 ## 84. 새 포스트 생성하기
 
 ## 85. 링크 컴포넌트 네비게이션
