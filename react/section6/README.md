@@ -417,6 +417,94 @@ post_index 가 DOM 에 마운트하는 시점에 데이터를 로딩해야 한�
 
 ## 84. 새 포스트 생성하기
 
+지난 시간에는 post_index 컴포넌트에 집중했고,
+FETCH_POSTS 액션 생성자를 구현했다.
+
+이번시간에는 유저가 새 포스트를 생성할 수 있는 능력을 주도록 한다.
+
+![날씨어플](img5.png)
+
+목업을 다시 리뷰해보면
+유저는 제목, 카테고리, 컨텐츠를 생성할 수 있다.
+여러개의 스텝이 있지만, DOM을 재생산할 수 있는 프로세스만 보게된다.
+
+새 포스트를 생성하는 프로세스를 다음과 같은 여러개의 스텝으로 나눠보았다.
+
+**다섯가지 스텝 프로세스**
+
+1. 컴포넌트에 폼을 보여주는 것을 만든다. 일종의 post_new 나 post_create 컴포넌트와 같은 것다.
+
+2. 유저가 네비게이팅할 수 있는 새 url로 된 라우트 파일의 컴포넌트를 추가할 것이다.
+    이것은 posts/new 와 같은 형태로 네비게이팅할 수 있다고 예상가능하다.
+
+3. post_index 컴포넌트에 버튼을 구현할 것이다. 이것은 유저가 create_form으로 이동할 수 있게 한다. 유저가 더 쉽게 이동할 수 있게 만드는 방법이다.
+
+4. post_new 컴포넌트로 실제 폼을 추가할 것 이다.
+    다시 컴포넌트로 돌아와서, 폼을 넣는다.
+    유저가 폼에 제출하면, 액션 생성자를 호출한다.
+    이는 블로그 포스트를 저장하는 리퀘스트를 만든다.
+
+5. 액션 생성자를 생성하고 리듀서를 업데이트 한다.
+
+
+이제 프로세스를 시작해볼게요.
+
+스캐폴딩을 해서 시작을 할 것인데요.
+
+post_create 나 post_new 컴포넌트 같은 것 말이죠.
+
+컴포넌트 디렉터리 안에 posts_new.js 파일을 생성 하고  
+일반적인 보일러플레이트 코드를 만든다.
+
+~~~ javascript
+// src/components/posts_new
+import React, {Component} from 'react';
+
+class PostsNew extends Component {
+    render(){
+        return (
+            <div>Create Form</div>
+        )
+    }
+}
+
+export default PostsNew;
+~~~
+
+PostsNew 컴포넌트를  라우터에 새 라우트를 정의할 필요가 있다.
+
+routes.js 파일을 열고, 방금 생성한 컴포넌트를 불러준다.
+
+~~~ javascript
+// src/routes.js
+import React from 'react';
+import { Route, IndexRoute } from 'react-router';
+
+import App from './components/app';
+import PostsIndex from './components/posts_index';
+import PostsNew from './components/posts_new';
+// PostsNew 컴포넌트를 불러온다.
+
+const Greeting = ()=>{
+    return <div>hey there!</div>;
+}
+
+export default (
+    <Route path="/" component={App} >
+        <IndexRoute component={PostsIndex} />
+        <Route path="posts/new" component={PostsNew} />
+        // 새 라우트 맵핑
+    </Route>
+);
+~~~
+
+이것이 스텝1,2이다.
+스캐폴딩을 했고, 컴포넌트를 별도의 라우트로 추가했다.
+
+이제 세번째 스텝으로 넘어가면,
+리스트뷰의 버튼을 구현해서 유저가 이를 클릭하면,
+새 포스트 컴포넌트로 넘어가는 것을 구현할 것인데 다음시간에 다루워 본다.
+
 ## 85. 링크 컴포넌트 네비게이션
 
 ## 86. 폼과 폼 제출
