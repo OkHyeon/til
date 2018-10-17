@@ -507,6 +507,57 @@ export default (
 
 ## 85. 링크 컴포넌트 네비게이션
 
+목업을 다시보면
+
+![날씨어플](img6.png)
+
+인덱스 라우트 오른편에 버튼을 클릭하면 새 포스트 폼으로 이동하게 된다.
+리액트 라우터의 다른 라우트를 네비게이팅하는 것은 무척 단순명료한데요.
+리액트 라우터는 링크 컴포넌트를 가지고있는데요. 이는 한 라우트에서 다른 곳으로 연결할 수있다.
+
+~~~ javascript
+// src/components/posts_index
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchPosts } from '../actions/index';
+import { Link } from 'react-router';
+// 리액트 라우터에서 Link 를 불러온다.
+
+class PostsIndex extends Component{
+    componentWillMount(){
+        this.props.fetchPosts();
+    }
+
+    render() {
+        return (
+            <div>
+                <div className="text-xs-right">
+                    <Link to="/posts/new" className="btn btn-primary">
+                        Add a Post
+                    </Link>
+                    // Link 태그를 추가한다.
+                    // 링크 컴포넌트는 anchor 나 a 태그로 만들어진다.
+                </div>
+                List of blog posts
+            </div>
+        )
+    }
+}
+
+export default connect( null , { fetchPosts } )( PostsIndex );
+~~~
+
+새로고침을 하면, anchor 태그가 보이고, 이것은 posts/new 로 연결됩니다.
+클릭해보면, 우리가 원하는 곳으로 이동이 된다.
+
+다른 라우트 사이를 연결하는 것은 리액트 라우터를 이용하면 무척 쉽다.
+링크 태그의 장점중 하나는 anchor 태그를 정의하고, 그와 같이 작동한다는 것이다.
+
+버튼을 클릭할 시에,
+anchor 태그랑 엮을 필요가 없고, 다른 라우트나 어플리케이션과 연결할 필요가 없다.
+
+이제 다음 시간에는 폼을 구성하여 유저가 실제 블로그 포스트를 만들 수 있게 해본다.
+
 ## 86. 폼과 폼 제출
 
 ## 87. 폼과 폼 제출 보다 자세히 알아보기
